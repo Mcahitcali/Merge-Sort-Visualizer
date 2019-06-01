@@ -1,0 +1,45 @@
+body {
+    background-color: #141e24;
+}
+
+.controls {
+    margin: 2em;
+    text-align: center;
+}
+
+.buttons {
+    display: inline-block;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.canvas {
+    margin-top: 0em;
+}
+
+.circle {
+    display: inline-block;
+    margin: 1em;
+}
+
+.circles-decimals {
+    font-size: 0.4em;
+}
+
+.head {
+    text-align: center;
+}
+
+.left {
+    float: left;
+    display: none;
+}
+
+.right {
+    float: right;
+    display: none;
+}
+
+.result {
+  display: none;
+}
