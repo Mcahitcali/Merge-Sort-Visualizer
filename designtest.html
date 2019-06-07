@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Circles</title>
+    <meta charset="utf-8" />
+    <script src="jquery.min.js" type="text/javascript"></script>
+    <script src="circle.min.js" type="text/javascript"></script>
+    <!-- <script src="jscript.js" type="text/javascript"></script> -->
+    <!-- <script src="merge.js" type="text/javascript"></script> -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" href="bootstrap.min.css" />
+  </head>
+
+  <body>
+    <div class="contain">
+      <div class="pseudo-contain">
+        <div class="card text-white mx-auto bg-success mb-3 w-25">
+          <div class="card-header">Pseudo Code</div>
+          <div class="card-body">
+            <p class="card-text">
+              Girilen dizi bolunebiliyorsa ikiye bolunuyor...
+            </p>
+          </div>
+        </div><br/>
+        <input id="ex16a" type="text"/><br/>
+      </div>
+      <div id="controls" class="controls">
+        <button id="backward" class="btn btn-primary btn-lg buttons">
+          Önceki Adım
+        </button>
+        <button id="start" class="btn btn-success btn-lg buttons">Başla</button>
+        <button id="restart" class="btn btn-warning btn-lg buttons">
+          Sıfırla
+        </button>
+        <button id="stop" class="btn btn-danger btn-lg buttons">Durdur</button>
+        <button id="forward" class="btn btn-primary btn-lg buttons">
+          Sonraki Adım
+        </button>
+      </div>
+      <div id="canvas" class="canvas">
+        <div id="origin-array" class="head"></div>
+        <div id="left-head" class="left-head"></div>
+        <div id="right-head" class="right-head"></div>
+        <div id="result-head" class="result-head"></div>
+      </div>
+    </div>
+  </body>
+</html>

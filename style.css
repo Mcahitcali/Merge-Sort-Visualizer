@@ -1,45 +1,135 @@
 body {
-    background-color: #141e24;
+    background-color: #141e24 !important;
+    color: white !important;
 }
 
-.controls {
-    margin: 2em;
-    text-align: center;
+#ex1Slider .slider-selection {
+	background: #BABABA;
 }
-
-.buttons {
-    display: inline-block;
-    margin-left: 1em;
-    margin-right: 1em;
-}
-
-.canvas {
-    margin-top: 0em;
-}
-
 .circle {
     display: inline-block;
     margin: 1em;
+    opacity: 0;
+}
+.head > .circles > .circle {
+    opacity: 1;
 }
 
 .circles-decimals {
     font-size: 0.4em;
 }
 
+
+
+.buttons {
+    display: inline-block;
+    margin-left: 1em;
+    margin-right: 1em;
+} 
+
+.contain {
+    margin-bottom: 10em;
+    display: grid;
+    grid-template-areas: "header"
+                         "controls"
+                         "canvas";
+}
+
+.header-contain {
+    grid-template-areas: "description pseudo";
+    grid-template-columns: repeat(2,1fr);
+    align-items: center;
+    grid-gap: 10em;
+    display: grid;
+    grid-area: header;
+}
+
+.description {
+    float: left;
+    font-family:Arial, Helvetica, sans-serif ;
+    font-size: 2em;
+    margin-left: 2em;
+    grid-area: description;
+}
+
+.desc-title {
+    font-size: 45px;
+    margin-bottom: 1em;
+}
+
+.pseudo-contain {
+    margin-top: 1em;
+    padding-left: 5em;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.25rem;
+    text-align: center;
+    color: #141e24;
+    grid-area: pseudo;
+}
+
+.canvas {
+    margin-top: 0em;
+    display: grid;
+    grid-template-areas: "header header "
+                       "left  right"
+                       "result result";
+
+    grid-area: canvas;
+    grid-row-gap: 2em;
+    justify-items: center;
+}
+
+.controls {
+    margin: 2em;
+    text-align: center;
+    grid-area: controls;
+}
+
+
 .head {
     text-align: center;
+    grid-area: header;
+}
+
+.left-head {
+    grid-area: left;
+}
+
+.right-head {
+    grid-area: right;
+}
+
+.result-head {
+    grid-area: result;
+} 
+
+.circles {
+    grid-area: circles;
+    justify-self: center;
 }
 
 .left {
     float: left;
-    display: none;
+    display: grid;
+    grid-template-areas: "circles circles "
+                       "left  right"
+                       "result result";
+    grid-column-gap: 5rem;
+    grid-area: left;
 }
 
 .right {
     float: right;
-    display: none;
+    display: grid;
+    grid-template-areas: "circles circles "
+                       "left  right"
+                       "result result";
+    grid-column-gap: 5rem;
+    grid-area: right;
 }
 
 .result {
-  display: none;
+  display: grid;
+  grid-area: result;
+  justify-self: center;
 }

@@ -4,22 +4,76 @@
   <title>Circles</title>
   <meta charset="utf-8" />
   <script src="jquery.min.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/bootstrap-slider.min.js"></script>
   <script src="circle.min.js" type="text/javascript"></script>
   <script src="jscript.js" type="text/javascript"></script>
   <!-- <script src="merge.js" type="text/javascript"></script> -->
-  <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/css/bootstrap-slider.min.css" />
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
-<body style="background-color: #141e24;color: antiquewhite">
-  <div id="controls" class="controls">
-    <button id="backward" class="btn btn-primary btn-lg buttons">Backward</button>
-    <button id="start" class="btn btn-success btn-lg buttons">Start</button>
-    <button id="stop" class="btn btn-danger btn-lg buttons">Stop</button>
-    <button id="forward" class="btn btn-primary btn-lg buttons">Forward</button>
-  </div>
-  <div id="canvas" class="canvas">
-    <div id="origin-array" class="head"></div>
-  </div>
-</body>
+<body>
+    <div class="contain">
+      <div class="header-contain">
+        <div class="description">
+          <div class="desc-title">Merge Sort (Birleştirme Sıralaması)</div>
+          <div class="desc-body">
+            <p>
+                Verinin hafızada sıralı tutulması için geliştirilen sıralama algoritmalarından (sorting algorithms) bir tanesidir. Basitçe sıralanacak olan diziyi ikişer elemanı kalan parçalara inene kadar sürekli olarak ikiye böler. Sonra bu parçaları kendi içlerinde sıralayarak birleştirir. Sonuçta elde edilen dizi sıralı dizinin kendisidir.</p>
+          </div>
+        </div>
+        <div class="pseudo-contain">
+              <div class="card text-white bg-info mb-3 w-75">
+                <div class="card-header">Pseudo Code</div>
+                <div class="card-body bg-primary">
+                  <div class="card-title text-black bg-warning">Mergesort(List[]){</div>
+                  <p id="step-1" class="card-text">
+                    <span>if (unsortedArray.length > 1) {</span><br>
+                      <span>middle = (unsortedArray.length) / 2</span><br>
+                      <span>left = unsortedArray.slice(0, middle);</span><br>
+                      <span>right = unsortedArray.slice(middle);</span><br>
+                      <span>return merge(mergeSort(left),mergeSort(right));</span>
+                    }
+                  </p>
+                  <hr>
+                  <p id="step-2" class="card-text">
+                    <span>if (left[leftIndex] < right[rightIndex]) {</span><br>
+                      <span>sortedArray.push(left[leftIndex]);</span><br>
+                  <span>} else {</span><br>
+                      <span>sortedArray.push(right[rightIndex]);</span>
+                  }
+                  </p>
+                  <hr>
+                  <p id="step-3" class="card-text">
+                    return sortedArray;
+                  </p>
+                </div>
+              </div>
+              <!-- <br/>
+              <input id="interval-slider" type="text" data-slider-min="500" data-slider-max="5000" data-slider-step="1000" data-slider-value="5000"/><br/> -->
+        </div>
+      </div>
+      
+      <div id="controls" class="controls">
+        <button id="backward" class="btn btn-primary btn-lg buttons" disabled="true">
+          Önceki Adım
+        </button>
+        <button id="start" class="btn btn-success btn-lg buttons">Başla</button>
+        <button id="restart" class="btn btn-warning btn-lg buttons" disabled="true">
+          Sıfırla
+        </button>
+        <button id="stop" class="btn btn-danger btn-lg buttons" disabled="true">Durdur</button>
+        <button id="forward" class="btn btn-primary btn-lg buttons" disabled="true">
+          Sonraki Adım
+        </button>
+      </div>
+      <div id="canvas" class="canvas">
+        <div id="origin-array" class="head"></div>
+        <div id="left-head" class="left-head"></div>
+        <div id="right-head" class="right-head"></div>
+        <div id="result-head" class="result-head"></div>
+      </div>
+    </div>
+  </body>
 </html>

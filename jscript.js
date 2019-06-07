@@ -1,8 +1,12 @@
 $(document).ready(function () {
+    //#region variables
     var unsortedArray = [],
         state = "begin",
         timer = null, 
         interval = 1000,
+        step = 1;
+        leftCircles = [],
+        rightCircles = [],
         leftCount = 1,
         endLeftCount = 1,
         rightCount = 1,
@@ -10,6 +14,14 @@ $(document).ready(function () {
         resultCount = 1,
         endResultCount = 1;
 
+    //#endregion
+
+    // $("#interval-slider").slider();
+    // $("#interval-slider").on("slide", function(slider){
+    //     interval = slider.value;
+    // })
+
+    //#region  askArrayData
     if (
         confirm(
             'Sıralamak istediğiniz sayıları rastgele oluşturmak için "TAMAM" butonuna,kendiniz girmek için "İPTAL" butonuna basınız.'
@@ -20,6 +32,7 @@ $(document).ready(function () {
         );
         if (countVal > 1 && countVal < 51) {
             unsortedArray = randomArray(countVal);
+            $("#pseudo-text").text("unsortedArray = randomArray(); //Create array");
         }
     } else {
         var values = prompt(
@@ -27,6 +40,7 @@ $(document).ready(function () {
         );
         var customArray = values.split(",").map(Number);
         unsortedArray = customArray;
+        $("#pseudo-text").text("unsortedArray = customArray; //Create array");
     }
 
     function randomArray(length) {
@@ -36,7 +50,9 @@ $(document).ready(function () {
         }
         return arr;
     }
+    //#endregion
 
+    //#region Visualizer
     const head = document.getElementById("origin-array"), array = unsortedArray;
     createCircleDiv(head, array, "canvas");
 
@@ -90,7 +106,7 @@ $(document).ready(function () {
     }
 
     function createCircle(child, circleText, color) {
-        Circles.create({
+        circle = Circles.create({
             id: child.id,
             radius: 40,
             value: 50,
@@ -100,35 +116,75 @@ $(document).ready(function () {
             colors: color,
             duration: 200
         });
+        // console.log(child.id);
+        // circles.push(circle);
+     }
+
+     var showCircle = function(div, opacity){
+        var circlesDiv = div.children()[0];
+        Array.from(circlesDiv.children).forEach(function(circle, index){
+            
+            var element = $("#"+circle.id);
+            if (div[0].id.includes('result')){
+                // var paths = element.find("path");
+                // paths[0].setAttribute("stroke","#f6e79c");
+                // paths[1].setAttribute("stroke","#f7ff56");
+                element.animate({opacity: opacity}).fadeOut(250).fadeIn(750);
+            }
+            element.animate({
+                opacity: opacity
+               },interval);
+        })
+
     }
 
-    // Merge Sort Implentation (Recursion)
-    function mergeSort(unsortedArray, parent) {
-        // No need to sort the array if the array only has one element or empty
-        if (unsortedArray.length <= 1) {
-            return unsortedArray;
-        }
-        // In order to divide the array in half, we need to figure out the middle
-        const middle = Math.floor(unsortedArray.length / 2);
+    var pseudoAnimate = function(step){
+        $(".bg-success").each(function( index ) {
+            $( this ).removeClass("bg-success");
+          });
+        $("#"+step).addClass("bg-success");
+    }
+    //#endregion
 
-        // This is where we will be dividing the array into left and right
+    //#region Merge Sort Implentation (Recursion)
+    function mergeSort(unsortedArray, parent) {
+        // Dizi tek elemanli ise siralamaya gerek yok 
+        if (unsortedArray.length <= 1) {
+        return unsortedArray;
+        }
+
+        const middle = Math.floor((unsortedArray.length) / 2);
         const left = unsortedArray.slice(0, middle);
         const right = unsortedArray.slice(middle);
+        var parents, newLeftParent, newRightParent;
+        
+        if(parent=="header"){ //ilk eleman girisi ise sag veya sol header divlerine ekle degilse diger alt divlere ekle 
+            const leftHeader = document.getElementById("left-head"),
+                    rightHeader = document.getElementById("right-head");
 
-        createCircleDiv(parent, left, "left");
-        createCircleDiv(parent, right, "right");
+            createCircleDiv(leftHeader, left, "left");
+            createCircleDiv(rightHeader, right, "right");
 
-        var parents = parent.children;
-        const newLeftParent = parents[1];
-        const newRightParent = parents[2];
+            newLeftParent = leftHeader.children[0];
+            newRightParent = rightHeader.children[0];
+        }
+        else{
+            createCircleDiv(parent, left, "left");
+            createCircleDiv(parent, right, "right");
 
-        console.log("Left:" + newLeftParent.id);
-        console.log("right:" + newRightParent.id);
+            parents = parent.children;
+            newLeftParent = parents[1];
+            newRightParent = parents[2];
+        }
+        
 
-        console.log("Left:" + left);
-        console.log("right:" + right);
+        // console.log("Left:" + newLeftParent.id);
+        // console.log("right:" + newRightParent.id);
 
-        // Using recursion to combine the left and right
+        // console.log("Left:" + left);
+        // console.log("right:" + right);
+
+        // sag ve sol iki diziyi de kendi icinde siralamak icin merge fonksiyonuna gonder
         return merge(
             mergeSort(left, newLeftParent),
             mergeSort(right, newRightParent),
@@ -140,9 +196,10 @@ $(document).ready(function () {
         let resultArray = [],
             leftIndex = 0,
             rightIndex = 0;
-        console.log(parent);
+
         // We will concatenate values into the resultArray in order
         while (leftIndex < left.length && rightIndex < right.length) {
+            
             if (left[leftIndex] < right[rightIndex]) {
                 resultArray.push(left[leftIndex]);
                 leftIndex++; // move left array cursor
@@ -151,82 +208,151 @@ $(document).ready(function () {
                 rightIndex++; // move right array cursor
             }
         }
+        // We need to concat here because there will be one element remaining
+        // from either left OR the right
         const result = resultArray
             .concat(left.slice(leftIndex))
             .concat(right.slice(rightIndex));
 
+        if(parent == "header"){
+            parent = document.getElementById("result-head");
+        }
         createCircleDiv(parent, result, "result");
 
-        // We need to concat here because there will be one element remaining
-        // from either left OR the right
         return result;
     }
+
+    //#endregion
+    
+    //#region step settings
     var nextStep = function() {
         var leftDiv = $("#left-array-" + endLeftCount);
         var rightDiv = $("#right-array-" + endRightCount);
         var resultDiv = $("#result-array-" + endResultCount);
-        if (leftDiv.length) {
-            leftDiv.fadeIn("slow");
-            endLeftCount += 1;
-        }
-        if (rightDiv.length) {
-            rightDiv.fadeIn("slow");
-            endRightCount += 1;
-        }
         if (
             resultDiv.length &&
             (endLeftCount == leftCount && endRightCount == rightCount)
         ) {
-            resultDiv.fadeIn("slow");
+            const parent = resultDiv.parent()[0];
+            if (parent.id.indexOf("result-head") >=0){
+                stopStep();
+                pseudoAnimate("step-3");
+                $("#start").attr("disabled", true);
+                $("#forward").attr("disabled", true);
+            }
+            else{
+                pseudoAnimate("step-2");
+            }
+            showCircle(resultDiv,1);
             endResultCount += 1;
         }
+        if (leftDiv.length) {
+            pseudoAnimate("step-1");
+            showCircle(leftDiv,1);
+            endLeftCount += 1;
+        }
+        if (rightDiv.length) {
+            pseudoAnimate("step-1");
+            showCircle(rightDiv,1);
+            endRightCount += 1;
+        }
+
     }
 
     var previousStep = function () {
         var leftDiv = $("#left-array-" + (endLeftCount-1));
         var rightDiv = $("#right-array-" + (endRightCount-1));
         var resultDiv = $("#result-array-" + (endResultCount-1));
-        if (leftDiv.length) {
-            leftDiv.fadeOut("slow");
-            endLeftCount -= 1;
-        }
-        if (rightDiv.length) {
-            rightDiv.fadeOut("slow");
-            endRightCount -= 1;
-        }
+
         if (resultDiv.length && (endLeftCount == leftCount && endRightCount == rightCount)) {
-            resultDiv.fadeOut("slow");
+            showCircle(resultDiv,0);
             endResultCount -= 1;
+        }else{
+
+            if (rightDiv.length) {
+                showCircle(rightDiv,0);
+                endRightCount -= 1;
+            }
+
+            if (leftDiv.length) {
+                showCircle(leftDiv,0);
+                endLeftCount -= 1;
+            }
         }
+
     }
 
+    var stopStep = function(){
+        $("#start").text("Devam Et");
+        $("#start").attr("disabled", false);
+        $("#restart").attr("disabled", false);
+        $("#forward").attr("disabled", false);
+        $("#backward").attr("disabled", false);
+        $("#stop").attr("disabled", true);
+
+        clearInterval(timer);// intervali sil
+        timer = null;
+    }
+
+    var resetStep = function(){
+        $(".left").remove();
+        $(".right").remove();
+        $(".result").remove();
+        $("#start").text("basla");
+        $("#start").attr("disabled", false);
+        $("#forward").attr("disabled", true);
+        $("#backward").attr("disabled", true);
+        $("#stop").attr("disabled", true);
+        $("#restart").attr("disabled", true);
+        
+        state = "begin";
+        clearInterval(timer);
+        timer = null;
+    }
+    //#endregion
+
+
+    //#region buttons funcs
     $("#start").click(function () {
         if(state == "begin"){
-            const canvas = document.getElementById("canvas");
-            mergeSort(unsortedArray, canvas);
+            mergeSort(unsortedArray,"header");
             state = "runing";
         }
         if (timer !== null) return;
-        timer = setInterval(nextStep, interval);
+        
+        timer = setInterval(nextStep, (interval+1000)); // 1500(interval) salise araligi ile fonksiyonu tekrarla
+        
+        $("#restart").attr("disabled", false);
+        $("#stop").attr("disabled", false);
+        $("#start").attr("disabled", true);
     });
+
     $("#stop").click(function(){
-        clearInterval(timer);
-        timer = null
+        stopStep();
     });
 
     $("#forward").click(function () {
+        $("#start").attr("disabled", false);
         nextStep();
-        console.log("EndLeftCount: "+endLeftCount);
-        console.log("endRightCount: "+endRightCount);
-        console.log("endResultCount: "+endResultCount);
     });
 
     $("#backward").click(function () {
         previousStep();
-        console.log("EndLeftCount: "+endLeftCount);
-        console.log("endRightCount: "+endRightCount);
-        console.log("endResultCount: "+endResultCount);
     });
 
-    
+    $("#restart").click(function(){
+        state = "begin";
+        timer = null;
+        interval = 1000;
+        leftCount = 1;
+        endLeftCount = 1;
+        rightCount = 1;
+        endRightCount = 1;
+        resultCount = 1;
+        endResultCount = 1;
+
+        resetStep();
+    });
+
+    //#endregion
 });
