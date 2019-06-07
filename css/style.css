@@ -3,9 +3,6 @@ body {
     color: white !important;
 }
 
-#ex1Slider .slider-selection {
-	background: #BABABA;
-}
 .circle {
     display: inline-block;
     margin: 1em;
@@ -82,9 +79,19 @@ body {
 .controls {
     margin: 2em;
     text-align: center;
+    grid-template-areas: "toggle-area"
+                         "button-area";
+    grid-template-rows: max-content  max-content;                     
+    grid-row-gap: 1em;
     grid-area: controls;
 }
-
+.radio-area {
+    grid-area: toggle-area;
+    margin-bottom: 1em;
+}
+.button-area {
+    grid-area: button-area;
+}
 
 .head {
     text-align: center;

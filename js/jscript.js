@@ -2,6 +2,7 @@ $(document).ready(function () {
     //#region variables
     var unsortedArray = [],
         state = "begin",
+        sorting = "asc",
         timer = null, 
         interval = 1000,
         step = 1;
@@ -199,14 +200,25 @@ $(document).ready(function () {
 
         // We will concatenate values into the resultArray in order
         while (leftIndex < left.length && rightIndex < right.length) {
-            
-            if (left[leftIndex] < right[rightIndex]) {
-                resultArray.push(left[leftIndex]);
-                leftIndex++; // move left array cursor
-            } else {
-                resultArray.push(right[rightIndex]);
-                rightIndex++; // move right array cursor
+            if (sorting == "asc"){
+                if (left[leftIndex] < right[rightIndex]) {
+                    resultArray.push(left[leftIndex]);
+                    leftIndex++; // move left array cursor
+                } else {
+                    resultArray.push(right[rightIndex]);
+                    rightIndex++; // move right array cursor
+                }
             }
+            else {
+                if (left[leftIndex] > right[rightIndex]) {
+                    resultArray.push(left[leftIndex]);
+                    leftIndex++; // move left array cursor
+                } else {
+                    resultArray.push(right[rightIndex]);
+                    rightIndex++; // move right array cursor
+                }
+            }
+            
         }
         // We need to concat here because there will be one element remaining
         // from either left OR the right
@@ -237,6 +249,8 @@ $(document).ready(function () {
             if (parent.id.indexOf("result-head") >=0){
                 stopStep();
                 pseudoAnimate("step-3");
+                clearInterval(timer);
+                timer == null;
                 $("#start").attr("disabled", true);
                 $("#forward").attr("disabled", true);
             }
@@ -268,7 +282,8 @@ $(document).ready(function () {
             showCircle(resultDiv,0);
             pseudoAnimate("step-2");
             endResultCount -= 1;
-        }else{
+        }
+        else{
 
             if (rightDiv.length) {
                 pseudoAnimate("step-1");
@@ -280,6 +295,10 @@ $(document).ready(function () {
                 pseudoAnimate("step-1");
                 showCircle(leftDiv,0);
                 endLeftCount -= 1;
+            }
+
+            if (endLeftCount == 1 && endRightCount == 1){
+                $("#backward").attr("disabled", true);
             }
         }
 
@@ -342,6 +361,7 @@ $(document).ready(function () {
     $("#backward").click(function () {
         previousStep();
         $("#forward").attr("disabled",false);
+        $("#start").attr("disabled", false);
     });
 
     $("#restart").click(function(){
@@ -357,6 +377,13 @@ $(document).ready(function () {
 
         resetStep();
     });
+
+    $('.radio-area .btn').on('click', function(event) {
+        sorting = $(this).find('input').val();
+        $(this).parent().find(".active").removeClass("active");
+        $(this).addClass("active");
+        console.log(sorting);
+      });
 
     //#endregion
 });
