@@ -266,15 +266,18 @@ $(document).ready(function () {
 
         if (resultDiv.length && (endLeftCount == leftCount && endRightCount == rightCount)) {
             showCircle(resultDiv,0);
+            pseudoAnimate("step-2");
             endResultCount -= 1;
         }else{
 
             if (rightDiv.length) {
+                pseudoAnimate("step-1");
                 showCircle(rightDiv,0);
                 endRightCount -= 1;
             }
 
             if (leftDiv.length) {
+                pseudoAnimate("step-1");
                 showCircle(leftDiv,0);
                 endLeftCount -= 1;
             }
@@ -338,6 +341,7 @@ $(document).ready(function () {
 
     $("#backward").click(function () {
         previousStep();
+        $("#forward").attr("disabled",false);
     });
 
     $("#restart").click(function(){
