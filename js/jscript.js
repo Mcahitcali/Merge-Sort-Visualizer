@@ -23,25 +23,50 @@ $(document).ready(function () {
     // })
 
     //#region  askArrayData
-    if (
-        confirm(
-            'Sıralamak istediğiniz sayıları rastgele oluşturmak için "TAMAM" butonuna,kendiniz girmek için "İPTAL" butonuna basınız.'
-        )
-    ) {
-        var countVal = prompt(
-            "1-100 arası kaç farklı sayıyı sıralamak istiyorsunuz? (Sınır 1-50)"
-        );
-        if (countVal > 1 && countVal < 51) {
-            unsortedArray = randomArray(countVal);
-            $("#pseudo-text").text("unsortedArray = randomArray(); //Create array");
+    unsortedArray = getArray();
+    function getArray() {
+        let arr = [];
+        if (
+            confirm(
+                'Sıralamak istediğiniz sayıları rastgele oluşturmak için "TAMAM" butonuna, kendiniz girmek için "İPTAL" butonuna basınız.'
+            )
+        ) {
+            var countVal = prompt(
+                "1-100 arası kaç farklı sayıyı sıralamak istiyorsunuz? (Sınır 1-50)"
+            );
+            if (countVal > 1 && countVal < 51) {
+                arr = randomArray(countVal);
+            }
+        } else {
+            var values = prompt(
+                "Lütfen sıralanmasını istediğiniz birbirinden farklı değerleri aralarında virgül olacak şekilde boşluk bırakmadan giriniz:"
+            );
+            if (values != null) {
+                if (values.slice(-1) == ",") {
+                    values = values.slice(0, values.length - 1);
+                }
+                if (values[0] == ",") {
+                    values = values.slice(1);
+                }
+                arr = values.split(",").map(Number);
+            }
+            
         }
-    } else {
-        var values = prompt(
-            "Lütfen sıralanmasını istediğiniz birbirinden farklı değerleri aralarında virgül olacak şekilde boşluk bırakmadan giriniz:"
-        );
-        var customArray = values.split(",").map(Number);
-        unsortedArray = customArray;
-        $("#pseudo-text").text("unsortedArray = customArray; //Create array");
+
+        if(checkErrArr(arr)){
+            return getArray(arr);
+        }
+
+        return arr
+    }
+
+    function checkErrArr(arr){
+        if(!arr.length){
+            return true;
+        }
+        if(arr.some(isNaN)){
+            return true;
+        }
     }
 
     function randomArray(length) {
@@ -332,7 +357,6 @@ $(document).ready(function () {
         timer = null;
     }
     //#endregion
-
 
     //#region buttons funcs
     $("#start").click(function () {
