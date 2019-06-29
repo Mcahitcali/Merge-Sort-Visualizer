@@ -1,81 +1,269 @@
 <html>
+  <head>
+    <title>Circles</title>
+    <meta charset="utf-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/lugolabs/circles/circles.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
-<head>
-  <title>Circles</title>
-  <meta charset="utf-8" />
-  <script src="js\jquery.min.js" type="text/javascript"></script>
-  <script src="js\circle.min.js" type="text/javascript"></script>
-  <script src="js\bootstrap-toggle.min.js" type="text/javascript"></script>
-  <script src="js\jscript.js" type="text/javascript"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <style>
 
-  <link rel="stylesheet" href="css\bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="css\style.css">
-  <link rel="stylesheet" href="css\bootstrap-toggle.min.css">
-</head>
+      .circle {
+        display: inline-block;
+        margin: 1em;
+        opacity: 0;
+      }
+      .head > .circles > .circle {
+        opacity: 1;
+      }
 
-<body>
+      .circles-decimals {
+        font-size: 0.4em;
+      }
+
+      .buttons {
+        display: inline-block;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+
+      .contain {
+        margin-bottom: 10em;
+        display: grid;
+        grid-template-areas:
+          "header"
+          "controls"
+          "canvas";
+      }
+
+      .header-contain {
+        grid-template-areas: "description pseudo";
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        grid-gap: 10em;
+        display: grid;
+        grid-area: header;
+      }
+
+      .description {
+        float: left;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 2em;
+        margin-left: 2em;
+        grid-area: description;
+      }
+
+      .desc-title {
+        font-size: 45px;
+        margin-bottom: 1em;
+      }
+
+      .pseudo-contain {
+        margin-top: 1em;
+        padding-left: 5em;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 1.25rem;
+        text-align: center;
+        color: #141e24;
+        grid-area: pseudo;
+      }
+
+      .canvas {
+        margin-top: 0em;
+        display: grid;
+        grid-template-areas:
+          "header header "
+          "left  right"
+          "result result";
+
+        grid-area: canvas;
+        grid-row-gap: 2em;
+        justify-items: center;
+      }
+
+      .controls {
+        margin: 2em;
+        text-align: center;
+        grid-template-areas:
+          "toggle-area"
+          "button-area";
+        grid-template-rows: max-content max-content;
+        grid-row-gap: 1em;
+        grid-area: controls;
+      }
+      .radio-area {
+        grid-area: toggle-area;
+        margin-bottom: 1em;
+      }
+      .button-area {
+        grid-area: button-area;
+      }
+
+      .head {
+        text-align: center;
+        grid-area: header;
+      }
+
+      .left-head {
+        grid-area: left;
+      }
+
+      .right-head {
+        grid-area: right;
+      }
+
+      .result-head {
+        grid-area: result;
+      }
+
+      .circles {
+        grid-area: circles;
+        justify-self: center;
+      }
+
+      .left {
+        float: left;
+        display: grid;
+        grid-template-areas:
+          "circles circles "
+          "left  right"
+          "result result";
+        grid-column-gap: 5rem;
+        grid-area: left;
+      }
+
+      .right {
+        float: right;
+        display: grid;
+        grid-template-areas:
+          "circles circles "
+          "left  right"
+          "result result";
+        grid-column-gap: 5rem;
+        grid-area: right;
+      }
+
+      .result {
+        display: grid;
+        grid-area: result;
+        justify-self: center;
+      }
+    </style>
+  </head>
+
+  <body>
     <div class="contain">
       <div class="header-contain">
         <div class="description">
           <div class="desc-title">Merge Sort (Birleştirme Sıralaması)</div>
           <div class="desc-body">
             <p>
-                Verinin hafızada sıralı tutulması için geliştirilen sıralama algoritmalarından (sorting algorithms) bir tanesidir. Basitçe sıralanacak olan diziyi ikişer elemanı kalan parçalara inene kadar sürekli olarak ikiye böler. Sonra bu parçaları kendi içlerinde sıralayarak birleştirir. Sonuçta elde edilen dizi sıralı dizinin kendisidir.</p>
+              Verinin hafızada sıralı tutulması için geliştirilen sıralama
+              algoritmalarından (sorting algorithms) bir tanesidir. Basitçe
+              sıralanacak olan diziyi ikişer elemanı kalan parçalara inene kadar
+              sürekli olarak ikiye böler. Sonra bu parçaları kendi içlerinde
+              sıralayarak birleştirir. Sonuçta elde edilen dizi sıralı dizinin
+              kendisidir.
+            </p>
           </div>
         </div>
         <div class="pseudo-contain">
-              <div class="card text-white bg-info mb-3 w-75">
-                <div class="card-header">Pseudo Code</div>
-                <div class="card-body bg-primary">
-                  <div class="card-title text-black bg-warning">Mergesort(List[]){</div>
-                  <p id="step-1" class="card-text">
-                    <span>if (unsortedArray.length > 1) {</span><br>
-                      <span>middle = (unsortedArray.length) / 2</span><br>
-                      <span>left = unsortedArray.slice(0, middle);</span><br>
-                      <span>right = unsortedArray.slice(middle);</span><br>
-                      <span>return merge(mergeSort(left),mergeSort(right));</span>
-                    }
-                  </p>
-                  <hr>
-                  <p id="step-2" class="card-text">
-                    <span>if (left[leftIndex] < right[rightIndex]) {</span><br>
-                      <span>sortedArray.push(left[leftIndex]);</span><br>
-                  <span>} else {</span><br>
-                      <span>sortedArray.push(right[rightIndex]);</span>
-                  }
-                  </p>
-                  <hr>
-                  <p id="step-3" class="card-text">
-                    return sortedArray;
-                  </p>
-                </div>
+          <div class="card text-white bg-info mb-3 w-75">
+            <div class="card-header">Pseudo Code</div>
+            <div class="card-body bg-primary">
+              <div class="card-title text-black bg-warning">
+                Mergesort(List[]){
               </div>
-              <!-- <br/>
+              <p id="step-1" class="card-text">
+                <span>if (unsortedArray.length > 1) {</span><br />
+                <span>middle = (unsortedArray.length) / 2</span><br />
+                <span>left = unsortedArray.slice(0, middle);</span><br />
+                <span>right = unsortedArray.slice(middle);</span><br />
+                <span>return merge(mergeSort(left),mergeSort(right));</span>
+                }
+              </p>
+              <hr />
+              <p id="step-2" class="card-text">
+                <span>if (left[leftIndex] < right[rightIndex]) {</span><br />
+                <span>sortedArray.push(left[leftIndex]);</span><br />
+                <span>} else {</span><br />
+                <span>sortedArray.push(right[rightIndex]);</span>
+                }
+              </p>
+              <hr />
+              <p id="step-3" class="card-text">
+                return sortedArray;
+              </p>
+            </div>
+          </div>
+          <!-- <br/>
               <input id="interval-slider" type="text" data-slider-min="500" data-slider-max="5000" data-slider-step="1000" data-slider-value="5000"/><br/> -->
         </div>
       </div>
-      
+
       <div id="controls" class="controls">
-          <div class="btn-group btn-group-lg btn-group-toggle radio-area" data-toggle="buttons">
-              <label id="asc" class="btn btn-lg btn-primary text-white active">
-                <input type="radio" data-toggle="button" name="options" id="option1" autocomplete="off" value="asc" checked> Küçükten Büyüğe
-              </label>
-              <label id="desc" class="btn btn-lg btn-primary text-white">
-                <input type="radio" data-toggle="button" name="options" id="option2" autocomplete="off" value="desc"> Büyükte Küçüğe
-              </label>
-            </div>
+        <div
+          class="btn-group btn-group-lg btn-group-toggle radio-area"
+          data-toggle="buttons"
+        >
+          <label id="asc" class="btn btn-lg btn-primary text-white active">
+            <input
+              type="radio"
+              data-toggle="button"
+              name="options"
+              id="option1"
+              autocomplete="off"
+              value="asc"
+              checked
+            />
+            Küçükten Büyüğe
+          </label>
+          <label id="desc" class="btn btn-lg btn-primary text-white">
+            <input
+              type="radio"
+              data-toggle="button"
+              name="options"
+              id="option2"
+              autocomplete="off"
+              value="desc"
+            />
+            Büyükte Küçüğe
+          </label>
+        </div>
         <div class="button-area">
-            <button id="backward" class="btn btn-primary btn-lg buttons" disabled="true">
-                Önceki Adım
-              </button>
-              <button id="start" class="btn btn-success btn-lg buttons">Başla</button>
-              <button id="restart" class="btn btn-warning btn-lg buttons" disabled="true">
-                Sıfırla
-              </button>
-              <button id="stop" class="btn btn-danger btn-lg buttons" disabled="true">Durdur</button>
-              <button id="forward" class="btn btn-primary btn-lg buttons" disabled="true">
-                Sonraki Adım
-              </button>
+          <button
+            id="backward"
+            class="btn btn-primary btn-lg buttons"
+            disabled="true"
+          >
+            Önceki Adım
+          </button>
+          <button id="start" class="btn btn-primary btn-lg buttons">
+            Başla
+          </button>
+          <button
+            id="restart"
+            class="btn btn-primary btn-lg buttons"
+            disabled="true"
+          >
+            Sıfırla
+          </button>
+          <button
+            id="stop"
+            class="btn btn-primary btn-lg buttons"
+            disabled="true"
+          >
+            Durdur
+          </button>
+          <button
+            id="forward"
+            class="btn btn-primary btn-lg buttons"
+            disabled="true"
+          >
+            Sonraki Adım
+          </button>
         </div>
       </div>
       <div id="canvas" class="canvas">
@@ -86,4 +274,425 @@
       </div>
     </div>
   </body>
+  <script>
+    //Lanet olasi ders kurallari boyle istedi :(
+    $(document).ready(function() {
+      //#region variables
+      var unsortedArray = [],
+        state = "begin",
+        sorting = "asc",
+        timer = null,
+        interval = 1000,
+        step = 1;
+      (leftCircles = []),
+        (rightCircles = []),
+        (leftCount = 1),
+        (endLeftCount = 1),
+        (rightCount = 1),
+        (endRightCount = 1),
+        (resultCount = 1),
+        (endResultCount = 1);
+
+      //#endregion
+
+      // $("#interval-slider").slider();
+      // $("#interval-slider").on("slide", function(slider){
+      //     interval = slider.value;
+      // })
+
+      //#region  askArrayData
+      unsortedArray = getArray();
+      function getArray() {
+        let arr = [];
+        if (
+          confirm(
+            'Sıralamak istediğiniz sayıları rastgele oluşturmak için "TAMAM" butonuna, kendiniz girmek için "İPTAL" butonuna basınız.'
+          )
+        ) {
+          var countVal = prompt(
+            "1-100 arası kaç farklı sayıyı sıralamak istiyorsunuz? (Sınır 1-50)"
+          );
+          if (countVal > 1 && countVal < 51) {
+            arr = randomArray(countVal);
+          }
+        } else {
+          var values = prompt(
+            "Lütfen sıralanmasını istediğiniz birbirinden farklı değerleri aralarında virgül olacak şekilde boşluk bırakmadan giriniz:"
+          );
+          if (values != null) {
+            if (values.slice(-1) == ",") {
+              values = values.slice(0, values.length - 1);
+            }
+            if (values[0] == ",") {
+              values = values.slice(1);
+            }
+            arr = values.split(",").map(Number);
+          }
+        }
+
+        if (checkErrArr(arr)) {
+          return getArray(arr);
+        }
+
+        return arr;
+      }
+
+      function checkErrArr(arr) {
+        if (!arr.length) {
+          return true;
+        }
+        if (arr.some(isNaN)) {
+          return true;
+        }
+      }
+
+      function randomArray(length) {
+        var arr = [];
+        for (i = 0; i < length; i++) {
+          arr[i] = 1 + Math.floor(Math.random() * (100 - 1));
+        }
+        return arr;
+      }
+      //#endregion
+
+      //#region Visualizer
+      const head = document.getElementById("origin-array"),
+        array = unsortedArray;
+      createCircleDiv(head, array, "canvas");
+
+      function createCircleDiv(parrentDiv, array, direction) {
+        const colors = [
+          ["#BEE3F7", "#45AEEA"],
+          ["#37ff19", "#18ba00"],
+          ["#ff4949", "#aa0101"]
+        ];
+
+        // if (direction == "left") {
+        //   color = colors[1];
+        // } else if (direction == "right") {
+        //   color = colors[2];
+        // } else {
+        //   color = colors[0];
+        // }
+        color = colors[0];
+        var circlesDiv = document.createElement("div");
+        circlesDiv.setAttribute("class", "circles");
+        circlesDiv.setAttribute("id", "circles");
+
+        if (direction != "canvas") {
+          var child = document.createElement("div");
+          child.className = direction;
+          if (direction == "left") {
+            child.setAttribute("id", direction + "-array-" + leftCount);
+            leftCount += 1;
+          } else if (direction == "right") {
+            child.setAttribute("id", direction + "-array-" + rightCount);
+            rightCount += 1;
+          } else {
+            child.setAttribute("id", direction + "-array-" + resultCount);
+            resultCount += 1;
+          }
+
+          parrentDiv.appendChild(child);
+          parrentDiv = child;
+        }
+        parrentDiv.appendChild(circlesDiv);
+
+        for (var i = 0; i < array.length; i++) {
+          var child = document.createElement("div");
+          child.className = "circle";
+          child.setAttribute("id", parrentDiv.id + "-circle-" + (i + 1));
+          circlesDiv.appendChild(child);
+
+          var circleText = array[i];
+
+          createCircle(child, circleText, color);
+        }
+      }
+
+      function createCircle(child, circleText, color) {
+        circle = Circles.create({
+          id: child.id,
+          radius: 40,
+          value: 50,
+          maxValue: 100,
+          width: 10,
+          text: circleText,
+          colors: color,
+          duration: 200
+        });
+        // console.log(child.id);
+        // circles.push(circle);
+      }
+
+      var showCircle = function(div, opacity) {
+        var circlesDiv = div.children()[0];
+        Array.from(circlesDiv.children).forEach(function(circle, index) {
+          var element = $("#" + circle.id);
+          if (div[0].id.includes("result")) {
+            // var paths = element.find("path");
+            // paths[0].setAttribute("stroke","#f6e79c");
+            // paths[1].setAttribute("stroke","#f7ff56");
+            element
+              .animate({ opacity: opacity })
+              .fadeOut(250)
+              .fadeIn(750);
+          }
+          element.animate(
+            {
+              opacity: opacity
+            },
+            interval
+          );
+        });
+      };
+
+      var pseudoAnimate = function(step) {
+        $(".bg-success").each(function(index) {
+          $(this).removeClass("bg-success");
+        });
+        $("#" + step).addClass("bg-success");
+      };
+      //#endregion
+
+      //#region Merge Sort Implentation (Recursion)
+      function mergeSort(unsortedArray, parent) {
+        // Dizi tek elemanli ise siralamaya gerek yok
+        if (unsortedArray.length <= 1) {
+          return unsortedArray;
+        }
+
+        const middle = Math.floor(unsortedArray.length / 2);
+        const left = unsortedArray.slice(0, middle);
+        const right = unsortedArray.slice(middle);
+        var parents, newLeftParent, newRightParent;
+
+        if (parent == "header") {
+          //ilk eleman girisi ise sag veya sol header divlerine ekle degilse diger alt divlere ekle
+          const leftHeader = document.getElementById("left-head"),
+            rightHeader = document.getElementById("right-head");
+
+          createCircleDiv(leftHeader, left, "left");
+          createCircleDiv(rightHeader, right, "right");
+
+          newLeftParent = leftHeader.children[0];
+          newRightParent = rightHeader.children[0];
+        } else {
+          createCircleDiv(parent, left, "left");
+          createCircleDiv(parent, right, "right");
+
+          parents = parent.children;
+          newLeftParent = parents[1];
+          newRightParent = parents[2];
+        }
+
+        // console.log("Left:" + newLeftParent.id);
+        // console.log("right:" + newRightParent.id);
+
+        // console.log("Left:" + left);
+        // console.log("right:" + right);
+
+        // sag ve sol iki diziyi de kendi icinde siralamak icin merge fonksiyonuna gonder
+        return merge(
+          mergeSort(left, newLeftParent),
+          mergeSort(right, newRightParent),
+          parent
+        );
+      }
+
+      function merge(left, right, parent) {
+        let resultArray = [],
+          leftIndex = 0,
+          rightIndex = 0;
+
+        // We will concatenate values into the resultArray in order
+        while (leftIndex < left.length && rightIndex < right.length) {
+          if (sorting == "asc") {
+            if (left[leftIndex] < right[rightIndex]) {
+              resultArray.push(left[leftIndex]);
+              leftIndex++; // move left array cursor
+            } else {
+              resultArray.push(right[rightIndex]);
+              rightIndex++; // move right array cursor
+            }
+          } else {
+            if (left[leftIndex] > right[rightIndex]) {
+              resultArray.push(left[leftIndex]);
+              leftIndex++; // move left array cursor
+            } else {
+              resultArray.push(right[rightIndex]);
+              rightIndex++; // move right array cursor
+            }
+          }
+        }
+        // We need to concat here because there will be one element remaining
+        // from either left OR the right
+        const result = resultArray
+          .concat(left.slice(leftIndex))
+          .concat(right.slice(rightIndex));
+
+        if (parent == "header") {
+          parent = document.getElementById("result-head");
+        }
+        createCircleDiv(parent, result, "result");
+
+        return result;
+      }
+
+      //#endregion
+
+      //#region step settings
+      var nextStep = function() {
+        var leftDiv = $("#left-array-" + endLeftCount);
+        var rightDiv = $("#right-array-" + endRightCount);
+        var resultDiv = $("#result-array-" + endResultCount);
+        if (
+          resultDiv.length &&
+          (endLeftCount == leftCount && endRightCount == rightCount)
+        ) {
+          const parent = resultDiv.parent()[0];
+          if (parent.id.indexOf("result-head") >= 0) {
+            stopStep();
+            pseudoAnimate("step-3");
+            clearInterval(timer);
+            timer == null;
+            $("#start").attr("disabled", true);
+            $("#forward").attr("disabled", true);
+          } else {
+            pseudoAnimate("step-2");
+          }
+          showCircle(resultDiv, 1);
+          endResultCount += 1;
+        }
+        if (leftDiv.length) {
+          pseudoAnimate("step-1");
+          showCircle(leftDiv, 1);
+          endLeftCount += 1;
+        }
+        if (rightDiv.length) {
+          pseudoAnimate("step-1");
+          showCircle(rightDiv, 1);
+          endRightCount += 1;
+        }
+      };
+
+      var previousStep = function() {
+        var leftDiv = $("#left-array-" + (endLeftCount - 1));
+        var rightDiv = $("#right-array-" + (endRightCount - 1));
+        var resultDiv = $("#result-array-" + (endResultCount - 1));
+
+        if (
+          resultDiv.length &&
+          (endLeftCount == leftCount && endRightCount == rightCount)
+        ) {
+          showCircle(resultDiv, 0);
+          pseudoAnimate("step-2");
+          endResultCount -= 1;
+        } else {
+          if (rightDiv.length) {
+            pseudoAnimate("step-1");
+            showCircle(rightDiv, 0);
+            endRightCount -= 1;
+          }
+
+          if (leftDiv.length) {
+            pseudoAnimate("step-1");
+            showCircle(leftDiv, 0);
+            endLeftCount -= 1;
+          }
+
+          if (endLeftCount == 1 && endRightCount == 1) {
+            $("#backward").attr("disabled", true);
+          }
+        }
+      };
+
+      var stopStep = function() {
+        $("#start").text("Devam Et");
+        $("#start").attr("disabled", false);
+        $("#restart").attr("disabled", false);
+        $("#forward").attr("disabled", false);
+        $("#backward").attr("disabled", false);
+        $("#stop").attr("disabled", true);
+
+        clearInterval(timer); // intervali sil
+        timer = null;
+      };
+
+      var resetStep = function() {
+        $(".left").remove();
+        $(".right").remove();
+        $(".result").remove();
+        $("#start").text("basla");
+        $("#start").attr("disabled", false);
+        $("#forward").attr("disabled", true);
+        $("#backward").attr("disabled", true);
+        $("#stop").attr("disabled", true);
+        $("#restart").attr("disabled", true);
+
+        state = "begin";
+        clearInterval(timer);
+        timer = null;
+      };
+      //#endregion
+
+      //#region buttons funcs
+      $("#start").click(function() {
+        if (state == "begin") {
+          mergeSort(unsortedArray, "header");
+          state = "runing";
+        }
+        if (timer !== null) return;
+
+        timer = setInterval(nextStep, interval + 1000); // 1500(interval) salise araligi ile fonksiyonu tekrarla
+
+        $("#restart").attr("disabled", false);
+        $("#stop").attr("disabled", false);
+        $("#start").attr("disabled", true);
+      });
+
+      $("#stop").click(function() {
+        stopStep();
+      });
+
+      $("#forward").click(function() {
+        $("#start").attr("disabled", false);
+        nextStep();
+      });
+
+      $("#backward").click(function() {
+        previousStep();
+        $("#forward").attr("disabled", false);
+        $("#start").attr("disabled", false);
+      });
+
+      $("#restart").click(function() {
+        state = "begin";
+        timer = null;
+        interval = 1000;
+        leftCount = 1;
+        endLeftCount = 1;
+        rightCount = 1;
+        endRightCount = 1;
+        resultCount = 1;
+        endResultCount = 1;
+
+        resetStep();
+      });
+
+      $(".radio-area .btn").on("click", function(event) {
+        sorting = $(this)
+          .find("input")
+          .val();
+        $(this)
+          .parent()
+          .find(".active")
+          .removeClass("active");
+        $(this).addClass("active");
+        console.log(sorting);
+      });
+
+      //#endregion
+    });
+  </script>
 </html>
